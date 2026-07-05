@@ -196,22 +196,57 @@
     }
   }
 
+  async function patchAnswer(id, makeAnswered, how){
+    var props={
+      "Status":{ select:{ name: makeAnswered?"Answered":"Open" } },
+      "Date Answered":{ date: makeAnswered? { start: iso(today) } : null }
+    };
+    if(makeAnswered) props["How Answered"]={ rich_text: how? [{ text:{ content: how } }] : [] };
+    else props["How Answered"]={ rich_text: [] };
+    await api("/pages/"+id,"PATCH",{ properties: props });
+    justMoved=id;
+  }
+
   function wireToggles(){
     document.querySelectorAll('.tog').forEach(function(btn){
       btn.addEventListener('click', async function(){
         var id=btn.getAttribute('data-id');
         var card=document.querySelector('.row[data-id="'+id+'"]');
-        var makeAnswered = !(card && card.classList.contains('answered'));
-        btn.disabled=true;
-        try{
-          await api("/pages/"+id,"PATCH",{ properties:{
-            "Status":{ select:{ name: makeAnswered?"Answered":"Open" } },
-            "Date Answered":{ date: makeAnswered? { start: iso(today) } : null }
-          }});
-          justMoved=id;
-          toast(makeAnswered?"✓ Flipped to Thanksgiving":"Moved back to Supplication");
-          await loadLists();
-        }catch(e){ toast(e.message,true); btn.disabled=false; }
+        var isAnswered = card && card.classList.contains('answered');
+
+        // Un-marking an answered prayer → straight back to Open
+        if(isAnswered){
+          btn.disabled=true;
+          try{ await patchAnswer(id,false,""); toast("Moved back to Supplication"); await loadLists(); }
+          catch(e){ toast(e.message,true); btn.disabled=false; }
+          return;
+        }
+
+        // Marking answered → show inline "how" prompt (only once per card)
+        if(card.querySelector('.how-prompt')) return;
+        var box=document.createElement('div');
+        box.className='how-prompt';
+        box.style.cssText='margin-top:11px;padding-top:11px;border-top:1px dashed var(--gold-line)';
+        box.innerHTML=''
+          + '<label class="fld" style="color:var(--gold)">How did God answer?</label>'
+          + '<textarea class="box haInput" placeholder="Write the story while it\'s fresh… (optional)"></textarea>'
+          + '<div style="display:flex;gap:8px;margin-top:10px">'
+          +   '<button class="btn sm haSave">Save &amp; flip to Thanksgiving</button>'
+          +   '<button class="tog haSkip">Skip</button>'
+          + '</div>';
+        card.appendChild(box);
+        var input=box.querySelector('.haInput'); input.focus();
+
+        box.querySelector('.haSave').addEventListener('click', async function(){
+          var s=this; s.disabled=true;
+          try{ await patchAnswer(id,true,input.value.trim()); toast("✓ Flipped to Thanksgiving"); await loadLists(); }
+          catch(e){ toast(e.message,true); s.disabled=false; }
+        });
+        box.querySelector('.haSkip').addEventListener('click', async function(){
+          this.disabled=true;
+          try{ await patchAnswer(id,true,""); toast("✓ Flipped to Thanksgiving"); await loadLists(); }
+          catch(e){ toast(e.message,true); this.disabled=false; }
+        });
       });
     });
   }
