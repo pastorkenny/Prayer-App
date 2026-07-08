@@ -1,18 +1,48 @@
-ght:1px;background:var(--line)}
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Prayer">
+<title>Daily Prayer — ACTS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F5F2;--card:#FCFCFB;--ink:#1F2A2E;--muted:#7C8A83;--line:#E1E5E0;
+    --forest:#3E5C50;--forest-soft:#EAF0EC;--gold:#A9791F;--gold-soft:#F6EEDD;--gold-line:#E4CE9E;
+    --plum:#6B4A5A;--plum-soft:#F1EAEE;--err:#A6432F;
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none!important;transition:none!important} }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--paper);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;padding:24px 16px 90px}
+  .wrap{max-width:640px;margin:0 auto}
+
+  header{margin-bottom:8px}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between;margin-bottom:8px}
+  h1{font-family:'Fraunces',serif;font-weight:500;font-size:30px;line-height:1.1;letter-spacing:-.01em}
+  h1 em{font-style:italic;color:var(--forest)}
+
+  .sec{display:flex;align-items:center;gap:10px;margin:24px 0 12px}
+  .sec .lt{font-family:'Fraunces',serif;font-weight:600;font-size:14px;width:24px;height:24px;display:grid;place-items:center;border-radius:6px;color:#fff;flex:none}
+  .sec .tt{font-weight:600;font-size:14px}.sec .tt span{color:var(--muted);font-weight:400;margin-left:6px;font-size:13px}
+  .sec .rule{flex:1;height:1px;background:var(--line)}
+
   .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:15px 16px;margin-bottom:12px}
   label.fld{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:600;margin-bottom:6px}
   input.box,textarea.box{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:'Inter',sans-serif;font-size:14px;color:var(--ink);background:#fff}
   textarea.box{font-family:'Fraunces',serif;font-size:15px;resize:vertical;min-height:56px;line-height:1.45}
   input.box:focus,textarea.box:focus{outline:none;border-color:var(--forest);box-shadow:0 0 0 3px var(--forest-soft)}
   .anchor{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted);margin-top:9px}
- 
+
   .btn{background:var(--forest);color:#fff;border:none;border-radius:8px;cursor:pointer;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:10px 18px;margin-top:12px}
   .btn:hover{background:#334E43}
   .btn:disabled{opacity:.5;cursor:default}
   .btn:focus-visible{outline:2px solid var(--forest);outline-offset:2px}
   .btn.sm{padding:6px 12px;font-size:12.5px;margin:0}
- 
+
   .row{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 14px;margin-bottom:10px}
   .row.answered{border-color:var(--gold-line);background:linear-gradient(180deg,var(--card),#FFFDF8)}
   .row.moved{animation:pop .5s ease}
@@ -41,11 +71,11 @@ ght:1px;background:var(--line)}
   .linkbtn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   .empty{color:var(--muted);font-style:italic;font-family:'Fraunces',serif;font-size:15px;padding:16px 4px;text-align:center}
   .loading{color:var(--muted);font-size:13px;padding:14px 4px;text-align:center}
- 
+
   .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--forest);color:#fff;font-size:13.5px;font-weight:600;padding:11px 20px;border-radius:10px;box-shadow:0 6px 20px rgba(31,42,46,.2);opacity:0;pointer-events:none;transition:all .3s ease;z-index:50;max-width:90vw;text-align:center}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .toast.err{background:var(--err)}
- 
+
   .setup{background:var(--gold-soft);border:1px solid var(--gold-line);border-radius:10px;padding:12px 14px;font-size:12.5px;color:#6e5214;margin-bottom:18px;line-height:1.5}
   .setup b{font-weight:600}
 </style>
@@ -56,9 +86,9 @@ ght:1px;background:var(--line)}
     <div class="eyebrow"><span>Daily Prayer</span><span id="todayLbl"></span></div>
     <h1>A · C · T · <em>S</em></h1>
   </header>
- 
+
   <div class="setup" id="setupNote" style="display:none"></div>
- 
+
   <!-- ADORATION -->
   <div class="sec"><span class="lt" style="background:var(--plum)">A</span><span class="tt">Adoration <span>who God is today</span></span><span class="rule"></span></div>
   <div class="card">
@@ -66,7 +96,7 @@ ght:1px;background:var(--line)}
     <textarea class="box" id="adoration" placeholder="You are patient with me — slow to anger…"></textarea>
     <div class="anchor">Anchor · Psalm 145:8</div>
   </div>
- 
+
   <!-- CONFESSION -->
   <div class="sec"><span class="lt" style="background:var(--plum)">C</span><span class="tt">Confession <span>name it, then receive grace</span></span><span class="rule"></span></div>
   <div class="card">
@@ -75,11 +105,11 @@ ght:1px;background:var(--line)}
     <div class="anchor">Anchor · 1 John 1:9 · Psalm 103:12</div>
     <button class="btn" id="saveAC">Save today's A &amp; C</button>
   </div>
- 
+
   <!-- THANKSGIVING -->
   <div class="sec"><span class="lt" style="background:var(--gold)">T</span><span class="tt">Thanksgiving <span>answered prayers</span></span><span class="rule"></span></div>
   <div id="thanksList"><div class="loading">Loading…</div></div>
- 
+
   <!-- SUPPLICATION -->
   <div class="sec"><span class="lt" style="background:var(--forest)">S</span><span class="tt">Supplication <span>open — tap to answer</span></span><span class="rule"></span></div>
   <div class="card">
@@ -92,21 +122,21 @@ ght:1px;background:var(--line)}
   <div id="suppList"><div class="loading">Loading…</div></div>
 </div>
 <div class="toast" id="toast"></div>
- 
+
 <script>
 (function(){
   // ===== CONFIG — your data sources =====
   var DS_REQUESTS = "0b870b82-1f3a-47a9-92c4-12981d083dc5";  // Prayer Requests
   var DS_REFLECT  = "7598f192-3f3b-42f4-afa0-548c04dc27e1";  // Daily Reflections
- 
+
   var today = new Date();
   function iso(d){ return d.toISOString().slice(0,10); }              // YYYY-MM-DD for Notion
   function disp(s){ if(!s) return ""; var p=s.split("-"); return (+p[1])+"/"+(+p[2])+"/"+p[0].slice(2); }
   document.getElementById('todayLbl').textContent = disp(iso(today));
- 
+
   var toastEl=document.getElementById('toast');
   function toast(msg,isErr){ toastEl.textContent=msg; toastEl.className="toast show"+(isErr?" err":""); setTimeout(function(){toastEl.className="toast"},2200); }
- 
+
   // ===== API proxy helper =====
   async function api(path, method, body){
     var r = await fetch("/api/notion", {
@@ -118,7 +148,7 @@ ght:1px;background:var(--line)}
     if(!r.ok){ throw new Error(data.error || (data.message||"Request failed")); }
     return data;
   }
- 
+
   // ===== map a Notion page → simple row =====
   function toRow(page){
     var p = page.properties || {};
@@ -136,7 +166,7 @@ ght:1px;background:var(--line)}
       lastThanked: (p["Last Thanked"]&&p["Last Thanked"].date&&p["Last Thanked"].date.start)||null
     };
   }
- 
+
   // ===== render a row =====
   var justMoved=null;
   function rowHTML(item){
@@ -153,12 +183,12 @@ ght:1px;background:var(--line)}
     return '<div class="'+cls+'" data-id="'+item.id+'">'+head+extra+'</div>';
   }
   function esc(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
- 
+
   // ===== rotation config =====
   var GRAD=10, FRESH_SHOW=5, OLDER_SHOW=5;   // graduate after 10 thanks; show newest 5 + up to 5 older
   var answeredAll=[];        // cached answered rows
   var thanksViewAll=false;   // false = today's rotation, true = full record
- 
+
   // ===== load both lists =====
   async function loadLists(){
     try{
@@ -166,10 +196,10 @@ ght:1px;background:var(--line)}
         { filter:{ property:"Status", select:{ equals:"Open" } }, sorts:[{ property:"Date Asked", direction:"ascending" }] });
       var ansRes = await api("/data_sources/"+DS_REQUESTS+"/query","POST",
         { filter:{ property:"Status", select:{ equals:"Answered" } }, sorts:[{ property:"Date Answered", direction:"descending" }] });
- 
+
       var open=(openRes.results||[]).map(toRow);
       answeredAll=(ansRes.results||[]).map(toRow);
- 
+
       document.getElementById('suppList').innerHTML = open.length? open.map(rowHTML).join("") : '<div class="empty">All caught up.</div>';
       renderThanks();
       wireToggles();
@@ -180,7 +210,7 @@ ght:1px;background:var(--line)}
       document.getElementById('thanksList').innerHTML='';
     }
   }
- 
+
   // Build today's blended list: newest fresh on top, older rotation below
   function todaysThanks(){
     var t=iso(today);
@@ -196,7 +226,7 @@ ght:1px;background:var(--line)}
       .slice(0,OLDER_SHOW);
     return fresh.concat(older);
   }
- 
+
   function thanksCardHTML(item){
     var moved=justMoved===item.id?" moved":"";
     return '<div class="row answered'+moved+'" data-id="'+item.id+'">'
@@ -204,7 +234,7 @@ ght:1px;background:var(--line)}
       + '<button class="thank" data-id="'+item.id+'" data-count="'+item.thankCount+'">🙏 Thanked</button></div>'
       + '</div>';
   }
- 
+
   function renderThanks(){
     var el=document.getElementById('thanksList');
     var toggle='<div class="thanks-toggle"><button id="thanksSwitch" class="linkbtn">'+(thanksViewAll?"← Today\'s rotation":"See all answered")+'</button></div>';
@@ -221,7 +251,7 @@ ght:1px;background:var(--line)}
     }
     wireThanks();
   }
- 
+
   function wireThanks(){
     var sw=document.getElementById('thanksSwitch');
     if(sw) sw.addEventListener('click',function(){ thanksViewAll=!thanksViewAll; renderThanks(); });
@@ -239,7 +269,7 @@ ght:1px;background:var(--line)}
       });
     });
   }
- 
+
   async function patchAnswer(id, makeAnswered, how){
     var props={
       "Status":{ select:{ name: makeAnswered?"Answered":"Open" } },
@@ -255,7 +285,7 @@ ght:1px;background:var(--line)}
     await api("/pages/"+id,"PATCH",{ properties: props });
     justMoved=id;
   }
- 
+
   // Thank God for an answered prayer: +1 count, stamp today, hide for the day
   async function thankFor(id, count){
     await api("/pages/"+id,"PATCH",{ properties:{
@@ -263,14 +293,14 @@ ght:1px;background:var(--line)}
       "Last Thanked":{ date:{ start: iso(today) } }
     }});
   }
- 
+
   function wireToggles(){
     document.querySelectorAll('.tog').forEach(function(btn){
       btn.addEventListener('click', async function(){
         var id=btn.getAttribute('data-id');
         var card=document.querySelector('.row[data-id="'+id+'"]');
         var isAnswered = card && card.classList.contains('answered');
- 
+
         // Un-marking an answered prayer → straight back to Open
         if(isAnswered){
           btn.disabled=true;
@@ -278,7 +308,7 @@ ght:1px;background:var(--line)}
           catch(e){ toast(e.message,true); btn.disabled=false; }
           return;
         }
- 
+
         // Marking answered → show inline "how" prompt (only once per card)
         if(card.querySelector('.how-prompt')) return;
         var box=document.createElement('div');
@@ -293,7 +323,7 @@ ght:1px;background:var(--line)}
           + '</div>';
         card.appendChild(box);
         var input=box.querySelector('.haInput'); input.focus();
- 
+
         box.querySelector('.haSave').addEventListener('click', async function(){
           var s=this; s.disabled=true;
           try{ await patchAnswer(id,true,input.value.trim()); toast("✓ Flipped to Thanksgiving"); await loadLists(); }
@@ -307,7 +337,7 @@ ght:1px;background:var(--line)}
       });
     });
   }
- 
+
   // ===== add request =====
   document.getElementById('addReq').addEventListener('click', async function(){
     var reqEl=document.getElementById('newReq'), scrEl=document.getElementById('newScr');
@@ -327,7 +357,7 @@ ght:1px;background:var(--line)}
     }catch(e){ toast(e.message,true); }
     btn.disabled=false;
   });
- 
+
   // ===== save A & C =====
   document.getElementById('saveAC').addEventListener('click', async function(){
     var a=document.getElementById('adoration').value.trim();
@@ -348,13 +378,13 @@ ght:1px;background:var(--line)}
     }catch(e){ toast(e.message,true); }
     btn.disabled=false;
   });
- 
+
   function showSetup(msg){
     var el=document.getElementById('setupNote');
     el.style.display="block";
     el.innerHTML='<b>Not connected yet.</b> '+esc(msg)+'<br>Check: (1) NOTION_TOKEN set on the server, (2) both databases shared with your integration, (3) the data source IDs above are correct.';
   }
- 
+
   loadLists();
 })();
 </script>
